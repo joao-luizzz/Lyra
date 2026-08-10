@@ -126,128 +126,24 @@ export function ThreeDNotebook({
   onSectionChangeRef.current = onSectionChange
 
   const chapterLabel = (i: number) => `${bookmarks[i].chapter ?? `0${i + 1}`} — ${bookmarks[i].label}`
-  const readMore = <span className="page-cta">Read the full chapter below ↓</span>
+  const readMore = <span className="page-cta">Veja o ambiente completo abaixo ↓</span>
 
-  const sectionContent: Omit<Section, "bookmark">[] = [
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(0)} color={bookmarks[0].color} title="The Notebook">
-          <p>Every idea starts on a blank page.</p>
-          <p>Flip the pages, or tap a ribbon above to jump straight to a chapter.</p>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(0)} color={bookmarks[0].color} title="How it works" footer={readMore}>
-          <ul className="page-list">
-            <li>Click the edge of a page to turn it</li>
-            <li>Use the arrow keys once the book is focused</li>
-            <li>Tap a colored ribbon to jump to that chapter</li>
-          </ul>
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(1)} color={bookmarks[1].color} title="Brainstorm">
-          <ul className="page-list">
-            <li>Modular desk lamp with wireless charging</li>
-            <li>Weekend trip: coastal trail, three towns</li>
-            <li>Redesign the onboarding flow</li>
-          </ul>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(1)} color={bookmarks[1].color} title="Worth exploring" footer={readMore}>
-          <p>&quot;What if the notebook remembered where you left off?&quot;</p>
-          <PhotoSlot rotate="2deg" width="90%" caption="jotted down at 11:42pm" />
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(2)} color={bookmarks[2].color} title="This quarter">
-          <ul className="page-list page-list--checked">
-            <li>Ship the new configurator</li>
-            <li>Read four books</li>
-            <li>Run a 10k</li>
-          </ul>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(2)} color={bookmarks[2].color} title="Long term" footer={readMore}>
-          <PhotoSlot rotate="-1deg" width="85%" />
-          <p>Small, consistent steps compound.</p>
-          <p>Review this page every Sunday.</p>
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(3)} color={bookmarks[3].color} title="Tuesday">
-          <p>Rained most of the day. Good for thinking.</p>
-          <PhotoSlot rotate="-3deg" width="80%" />
-          <p>Started sketching the new layout — felt right almost immediately.</p>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(3)} color={bookmarks[3].color} title="Wednesday" footer={readMore}>
-          <p>Coffee with an old friend. Talked for two hours without noticing.</p>
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(4)} color={bookmarks[4].color} title="Rough shapes">
-          <PhotoSlot rotate="4deg" width="88%" />
-          <div className="sketch-grid">
-            {[...Array(6)].map((_, i) => (
-              <span key={i} className="sketch-box" />
-            ))}
-          </div>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(4)} color={bookmarks[4].color} title="Notes on form" footer={readMore}>
-          <p>Rounded corners everywhere. Soft shadow, no harsh edges.</p>
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(5)} color={bookmarks[5].color} title="Meeting recap">
-          <ul className="page-list">
-            <li>Ship date moved up a week</li>
-            <li>Design review Friday</li>
-            <li>Need feedback from the team</li>
-          </ul>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(5)} color={bookmarks[5].color} title="Reading list" footer={readMore}>
-          <ul className="page-list">
-            <li>The Design of Everyday Things</li>
-            <li>Atomic Habits</li>
-          </ul>
-          <PhotoSlot rotate="-2deg" width="85%" />
-        </PageFace>
-      ),
-    },
-    {
-      left: (
-        <PageFace eyebrow={chapterLabel(6)} color={bookmarks[6].color} title="Studio">
-          <p className="page-mono">hello@studio.co</p>
-          <p className="page-mono">+1 (555) 010-2938</p>
-        </PageFace>
-      ),
-      right: (
-        <PageFace eyebrow={chapterLabel(6)} color={bookmarks[6].color} title="Printer" footer={readMore}>
-          <p className="page-mono">Riso &amp; Co.</p>
-          <p className="page-mono">printer@riso.co</p>
-          <PhotoSlot rotate="3deg" width="92%" />
-        </PageFace>
-      ),
-    },
-  ]
+  const sectionContent: Omit<Section, "bookmark">[] = SECTION_META.map((section, i) => ({
+    left: (
+      <PageFace eyebrow={chapterLabel(i)} color={section.color} title={section.label}>
+        <p>{section.synopsis}</p>
+      </PageFace>
+    ),
+    right: (
+      <PageFace eyebrow={chapterLabel(i)} color={section.color} title="Sobre este espaço" footer={readMore}>
+        <ul className="page-list">
+          <li>Design neuroinclusivo baseado em evidências</li>
+          <li>Materiais sensoriais criteriosamente selecionados</li>
+          <li>Integração ao currículo escolar</li>
+        </ul>
+      </PageFace>
+    ),
+  }))
 
   const sections: Section[] = sectionContent.map((content, i) => ({
     bookmark: bookmarks[i],
@@ -255,33 +151,31 @@ export function ThreeDNotebook({
   }))
 
   const frontCover = (
-    <div className="storybook-cover" style={{ background: coverColor }}>
-      <div className="cover-frame">
-        <StarSticker className="sticker sticker--star-a" color="#ffb703" />
-        <StarSticker className="sticker sticker--star-b" color="#4cc9f0" />
-        <HeartSticker className="sticker sticker--heart" color="#ff6b9d" />
-        <div className="cover-logo-container">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/mundo-lyra-logo.png" alt="Mundo Lyra" className="cover-logo-img" />
-        </div>
-        <p className="cover-wordmark">Our Little Storybook</p>
+    <div className="album-cover">
+      {/* White binding strip on left edge */}
+      <div className="album-spine" />
+      {/* Photo window — centered upper area */}
+      <div className="album-photo-window">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/mundo-lyra-logo.png" alt="Mundo Lyra" className="album-window-logo" />
       </div>
-      <div className="ribbon-bow" style={{ background: elasticColor }}>
-        <span className="ribbon-bow-knot" />
+      {/* Brand label at bottom left with magical writing effect */}
+      <div className="album-label">
+        <svg viewBox="0 0 300 80" width="180" height="48" className="magic-signature">
+          <text x="0" y="55" fontFamily="'Great Vibes', cursive" fontSize="56" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5">
+            Mundo Lyra
+          </text>
+        </svg>
       </div>
     </div>
   )
 
   const backCover = (
-    <div className="storybook-cover back-cover" style={{ background: coverColor }}>
-      <div className="cover-frame">
-        <div className="cover-back-inner">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/mundo-lyra-logo.png" alt="Mundo Lyra" className="cover-logo-small-img" />
-        </div>
-      </div>
-      <div className="ribbon-bow" style={{ background: elasticColor }}>
-        <span className="ribbon-bow-knot" />
+    <div className="album-cover album-cover--back">
+      <div className="album-spine album-spine--back" />
+      <div className="album-back-logo">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/mundo-lyra-logo.png" alt="Mundo Lyra" className="album-back-logo-img" />
       </div>
     </div>
   )
@@ -417,13 +311,18 @@ export function ThreeDNotebook({
     <div className={`book-wrapper ${className}`} tabIndex={0} ref={wrapperRef}>
       <div className="intro-panel hidden md:block">
         <p className="intro-eyebrow">MUNDO LYRA</p>
-        <h1 className="intro-title">Step into the storybook</h1>
-        <p className="intro-copy">Tap a ribbon to open a chapter, or turn the pages yourself with the arrow keys.</p>
+        <h1 className="intro-title">Explore os nossos ambientes</h1>
+        <p className="intro-copy">Toque em uma aba colorida para abrir um capítulo, ou vire as páginas com as setas do teclado.</p>
       </div>
 
       <div className="book-stage">
         <div className="book-glow">
           <div className="book">
+            <div className="spiral-container">
+              {[...Array(14)].map((_, i) => (
+                <div key={`spiral-${i}`} className="spiral-ring" />
+              ))}
+            </div>
             {pages.map((page, idx) => (
               <div key={idx} className="page">
                 <div className={`front ${page.front.isCover ? "cover" : ""}`}>{page.front.content}</div>
@@ -432,7 +331,9 @@ export function ThreeDNotebook({
                 {page.bookmark && page.sectionIdx !== undefined && (
                   <button
                     type="button"
-                    className={`bookmark-tab ${activeIndex === page.sectionIdx ? "is-active" : ""}`}
+                    className={`bookmark-tab ${activeIndex === page.sectionIdx ? "is-active" : ""} ${
+                      activeIndex !== null && page.sectionIdx <= activeIndex ? "is-flipped" : ""
+                    }`}
                     style={
                       {
                         background: page.bookmark.color,
@@ -457,7 +358,7 @@ export function ThreeDNotebook({
       </div>
 
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Great+Vibes&display=swap");
 
         .book-wrapper {
           position: relative;
@@ -476,7 +377,7 @@ export function ThreeDNotebook({
         .intro-panel {
           z-index: 0;
           position: relative;
-          flex: 0 1 320px;
+          flex: 0 1 260px;
           min-width: 0;
           text-align: left;
           pointer-events: none;
@@ -492,7 +393,7 @@ export function ThreeDNotebook({
           font-weight: 700;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          background: linear-gradient(90deg, #ff7ea6, #4cc9f0);
+          background: linear-gradient(90deg, #1e3a8a, #991b1b);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -512,7 +413,7 @@ export function ThreeDNotebook({
           font-size: 1.15rem;
           max-width: 34ch;
           line-height: 1.6;
-          color: #475569;
+          color: #454742;
         }
 
         .book-stage {
@@ -520,7 +421,7 @@ export function ThreeDNotebook({
           position: relative;
           flex: 1 1 auto;
           min-width: 0;
-          margin-left: -18cqmin;
+          margin-left: -10cqmin;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -528,17 +429,17 @@ export function ThreeDNotebook({
 
         .book-glow {
           display: flex;
-          filter: drop-shadow(0 2cqmin 4cqmin rgba(0, 0, 0, 0.14)) drop-shadow(0 0 3cqmin rgba(255, 126, 166, 0.18));
+          filter: drop-shadow(0 3cqmin 6cqmin rgba(30, 58, 138, 0.25)) drop-shadow(0 1cqmin 2cqmin rgba(0,0,0,0.18));
           transition: filter 0.4s ease;
         }
         .book-wrapper:hover .book-glow {
-          filter: drop-shadow(0 3cqmin 5cqmin rgba(0, 0, 0, 0.18)) drop-shadow(0 0 4cqmin rgba(255, 126, 166, 0.26));
+          filter: drop-shadow(0 4cqmin 8cqmin rgba(30, 58, 138, 0.35)) drop-shadow(0 1cqmin 3cqmin rgba(0,0,0,0.25));
         }
 
         .book {
           position: relative;
           display: flex;
-          width: 76cqmin;
+          width: clamp(380px, 58cqmin, 620px);
           pointer-events: none;
           transform-style: preserve-3d;
           transition: translate 0.9s cubic-bezier(0.22, 1, 0.36, 1), width 0.3s ease-out,
@@ -557,7 +458,7 @@ export function ThreeDNotebook({
           flex: none;
           display: flex;
           width: 100%;
-          font-size: 3.7cqmin;
+          font-size: clamp(13px, 4cqmin, 16px);
           pointer-events: all;
           user-select: none;
           transform-style: preserve-3d;
@@ -604,136 +505,166 @@ export function ThreeDNotebook({
         }
 
         .cover {
-          color: #0f172a;
+          color: #ffffff;
         }
 
-        /* --- children's photo-album cover --- */
-        .storybook-cover {
+        /* =============================================
+           PHOTO ALBUM COVER (matches reference image)
+           ============================================= */
+        .album-cover {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 10px;
-          background-image: radial-gradient(rgba(255, 255, 255, 0.65) 2px, transparent 2.5px);
-          background-size: 22px 22px;
-          background-position: 0 0;
+          border-radius: 8px;
+          /* Blue to red gradient base */
+          background-color: #1e3a8a;
+          /* Subtle rich leatherette texture layered over the blue-to-red gradient */
+          background-image:
+            linear-gradient(145deg, rgba(255,255,255,0.04) 0%, transparent 60%),
+            repeating-linear-gradient(
+              135deg,
+              rgba(255,255,255,0.015) 0px,
+              rgba(255,255,255,0.015) 1px,
+              transparent 1px,
+              transparent 4px
+            ),
+            linear-gradient(135deg, #1e3a8a 0%, #991b1b 100%);
+          box-shadow: inset 0 0 0 1px rgba(197, 160, 89, 0.25);
+          overflow: visible;
         }
 
-        .storybook-cover::before {
-          content: "";
+        /* White binding strip — left edge (front cover) */
+        .album-spine {
           position: absolute;
-          inset: 0;
-          opacity: 0.25;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-          mix-blend-mode: overlay;
-          pointer-events: none;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 0.55em;
+          background: #F5F0EB;
+          border-radius: 8px 0 0 8px;
+          box-shadow: inset -2px 0 4px rgba(0,0,0,0.15);
         }
 
-        .cover-frame {
-          position: absolute;
-          inset: 1.1em;
-          border-radius: 18px;
-          background: rgba(255, 255, 255, 0.55);
-          border: 0.28em dashed rgba(15, 23, 42, 0.28);
-          box-shadow: inset 0 0 1.5em rgba(255, 255, 255, 0.4), 0 8px 20px rgba(0, 0, 0, 0.08);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 0.7em;
-          padding: 1.2em;
-        }
-
-        .sticker {
-          position: absolute;
-          filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
-        }
-        .sticker--star-a {
-          top: 0.5em;
-          left: 0.6em;
-          transform: rotate(-12deg);
-        }
-        .sticker--star-b {
-          bottom: 0.7em;
-          right: 0.6em;
-          transform: rotate(14deg);
-        }
-        .sticker--heart {
-          top: 0.9em;
-          right: 1em;
-          transform: rotate(8deg);
-        }
-
-        .cover-logo-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-
-        .cover-logo-img {
-          max-width: 78%;
-          max-height: 70%;
-          object-fit: contain;
-          mix-blend-mode: multiply;
-          opacity: 0.95;
-          filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
-          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .book-wrapper:hover .cover-logo-img {
-          transform: scale(1.04) rotate(-2deg);
-        }
-
-        .cover-wordmark {
-          margin: 0;
-          font-family: "Baloo 2", var(--font-serif), cursive;
-          font-weight: 700;
-          font-size: 0.85em;
-          color: #7a4a8f;
-          letter-spacing: 0.01em;
-        }
-
-        .cover-logo-small-img {
-          max-width: 55%;
-          max-height: 55%;
-          object-fit: contain;
-          mix-blend-mode: multiply;
-          opacity: 0.75;
-        }
-
-        .cover-back-inner {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-
-        /* ribbon bow instead of a sleek elastic band */
-        .ribbon-bow {
-          position: absolute;
-          right: -0.6em;
-          top: 50%;
-          translate: 0 -50%;
-          width: 1.1em;
-          height: 3.2em;
-          border-radius: 0.5em;
-          box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.15);
-        }
-        .ribbon-bow-knot {
+        /* Photo window — centered, slightly upper */
+        .album-photo-window {
           position: absolute;
           left: 50%;
-          top: 50%;
+          top: 33%;
           translate: -50% -50%;
-          width: 1.6em;
-          height: 1.6em;
-          border-radius: 50%;
-          background: inherit;
-          box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+          width: 44%;
+          aspect-ratio: 4/3;
+          background: #FBF9F5;
+          border-radius: 3px;
+          /* Classic mat border with subtle gold inner ring */
+          padding: 0.48em;
+          box-shadow:
+            0 4px 14px rgba(0,0,0,0.35),
+            inset 0 0 0 1px rgba(197,160,89,0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
         }
-        .back-cover .ribbon-bow {
-          left: -0.6em;
-          right: auto;
+
+        .album-photo-window::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 3px;
+          box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        .album-window-logo {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          padding: 8%;
+          mix-blend-mode: multiply;
+        }
+
+        /* Small brand label bottom-left */
+        .album-label {
+          position: absolute;
+          bottom: 0.8em;
+          left: 1.6em;
+        }
+        
+        .magic-signature text {
+          stroke-dasharray: 300;
+          stroke-dashoffset: 300;
+          animation: 
+            drawSignature 2.5s ease-in-out forwards 0.5s,
+            fillSignature 1s ease-in-out forwards 2.5s;
+        }
+
+        @keyframes drawSignature {
+          to { stroke-dashoffset: 0; }
+        }
+        
+        @keyframes fillSignature {
+          to { fill: rgba(255, 255, 255, 0.6); stroke: transparent; }
+        }
+
+        /* =============================================
+           SPIRAL BINDING
+           ============================================= */
+        .spiral-container {
+          position: absolute;
+          left: -0.5cqmin;
+          top: 3cqmin;
+          bottom: 3cqmin;
+          width: 2.2cqmin;
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          pointer-events: none;
+          transform: translateZ(2px);
+        }
+        .spiral-ring {
+          width: 100%;
+          height: 0.8cqmin;
+          background: linear-gradient(180deg, #b0adaa 0%, #ffffff 40%, #757371 100%);
+          border-radius: 1cqmin;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.8);
+          position: relative;
+        }
+        .spiral-ring::after {
+          content: '';
+          position: absolute;
+          right: -2px;
+          top: 10%;
+          bottom: 10%;
+          width: 4px;
+          background: rgba(0,0,0,0.2);
+          border-radius: 50%;
+          filter: blur(1px);
+        }
+
+        /* Back cover */
+        .album-cover--back {
+          background-image: linear-gradient(135deg, #1e3a8a 0%, #991b1b 100%);
+        }
+        .album-spine--back {
+          left: auto;
+          right: 0;
+          border-radius: 0 8px 8px 0;
+          box-shadow: inset 2px 0 4px rgba(0,0,0,0.12);
+        }
+        .album-back-logo {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .album-back-logo-img {
+          width: 40%;
+          opacity: 0.18;
+          filter: brightness(10);
+          object-fit: contain;
         }
 
         .page-corner {
@@ -950,52 +881,72 @@ export function ThreeDNotebook({
 
         .bookmark-tab {
           position: absolute;
-          right: -4.2cqmin;
-          top: calc(15% + var(--tab-index, 0) * 11%);
+          right: -168px;
+          top: calc(4.5% + var(--tab-index, 0) * 13.2%);
           appearance: none;
           border: none;
           cursor: pointer;
-          min-width: 4.8cqmin;
-          height: 3.5cqmin;
-          min-height: 24px;
-          padding: 0.5em 0.8em;
+          width: 178px;
+          height: 32px;
+          padding: 0 12px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          border-radius: 0 10px 10px 0;
-          box-shadow: 4px 2px 8px -2px rgba(0, 0, 0, 0.2), inset 1px 0 0 rgba(255, 255, 255, 0.2);
-          filter: brightness(0.95);
-          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease, box-shadow 0.25s ease;
+          justify-content: flex-start;
+          border-radius: 0 8px 8px 0;
+          box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.25), inset 1px 0 0 rgba(255, 255, 255, 0.3);
+          filter: brightness(0.96);
+          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease;
           transform-origin: left center;
+          z-index: 5;
+        }
+
+        .bookmark-tab::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background: rgba(255, 255, 255, 0.4);
+          border-radius: 2px 0 0 2px;
         }
 
         .bookmark-tab:hover,
         .bookmark-tab:focus-visible {
-          filter: brightness(1.12);
-          transform: translateX(0.55em) scale(1.06);
+          filter: brightness(1.14);
+          transform: translateX(10px) scale(1.02);
+          z-index: 20;
         }
 
         .bookmark-tab.is-active {
-          filter: brightness(1.1);
-          transform: translateX(0.4em);
-          box-shadow: 4px 2px 10px -1px var(--tab-color, rgba(0, 0, 0, 0.4));
+          filter: brightness(1.15);
+          transform: translateX(14px);
+          box-shadow: 6px 4px 14px var(--tab-color, rgba(0, 0, 0, 0.45));
+          z-index: 15;
+        }
+
+        .bookmark-tab.is-flipped {
+          opacity: 0;
+          pointer-events: none;
+          transform: translateX(-15px);
         }
 
         .bookmark-tab:active {
-          transform: translateX(0.3em) scale(0.97);
+          transform: translateX(8px) scale(0.98);
         }
 
         .bookmark-label {
-          font-family: "Baloo 2", var(--font-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
-          font-size: 10px;
+          font-family: var(--font-sans), "Montserrat", sans-serif;
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-          color: #fff;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+          letter-spacing: 0.02em;
+          color: #ffffff;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
           white-space: nowrap;
-          writing-mode: vertical-rl;
-          transform: rotate(180deg);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          writing-mode: horizontal-tb;
+          transform: none;
         }
 
         @media (max-width: 767px) {
