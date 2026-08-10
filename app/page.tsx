@@ -1,56 +1,143 @@
 "use client"
 
-import { useState, type ComponentType } from "react"
-import { ThreeDNotebook } from "@/components/3d-notebook"
-import { SparkleField } from "@/components/sparkle-field"
-import {
-  CantinhoAromasSection,
-  CentroAtendimentoSection,
-  CirculacaoSection,
-  ComunicacaoAcessivelSection,
-  ParquePirilimSection,
-  SECTION_META,
-  SalaDescompressaoSection,
-  SinaptofonoSection,
-  type SectionId,
-} from "@/components/notebook-sections"
+import { useState, type CSSProperties } from "react"
+import { ThreeDNotebook } from "../components/3d-notebook"
+import { PRODUCTS } from "../components/notebook-data"
 
-const SECTION_COMPONENTS: Record<SectionId, ComponentType> = {
-  "parque-pirilim": ParquePirilimSection,
-  "centro-atendimento": CentroAtendimentoSection,
-  circulacao: CirculacaoSection,
-  sinaptofono: SinaptofonoSection,
-  "cantinho-aromas": CantinhoAromasSection,
-  "sala-descompressao": SalaDescompressaoSection,
-  "comunicacao-acessivel": ComunicacaoAcessivelSection,
-}
+const WHATSAPP_URL = "https://wa.me/5511994952210"
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState<SectionId | null>(null)
-
-  const ActiveSection = activeSection ? SECTION_COMPONENTS[activeSection] : null
+  const [activeProduct, setActiveProduct] = useState<number | null>(null)
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col text-slate-900" style={{ backgroundColor: '#F0F4F8' }}>
-      <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-8 md:py-12">
-        {/* Subtle ambient glows matching the blue-to-red album cover palette */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,_rgba(30,58,138,0.06),_transparent_55%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_75%,_rgba(153,27,27,0.05),_transparent_55%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(255,255,255,0.5),_transparent_60%)]" />
+    <main>
+      <div className="site-shell">
+        <header className="site-header">
+          <a className="brand" href="#livro" aria-label="Foco Soluções Educacionais - início">
+            <img src="/assets/logo-foco.webp" alt="" />
+            <span>
+              <strong>FOCO</strong>
+              <small>coleção Mundo Lyra</small>
+            </span>
+          </a>
+          <nav className="site-nav" aria-label="Navegação principal">
+            <a href="#produtos">Produtos</a>
+            <a href="#metodologia">Metodologia</a>
+            <a className="header-cta" href={WHATSAPP_URL} target="_blank" rel="noreferrer">Falar com consultor</a>
+          </nav>
+        </header>
 
-        {/* Drifting sparkles */}
-        <SparkleField />
+        <div id="livro">
+          <ThreeDNotebook onSectionChange={setActiveProduct} />
+        </div>
+      </div>
 
-        <div className="relative z-10 h-[88vh] w-full max-w-7xl md:h-[95vh] md:max-w-[1400px]">
-          <ThreeDNotebook
-            onSectionChange={(index) =>
-              setActiveSection(index !== null ? SECTION_META[index].id : null)
-            }
-          />
+      <section id="produtos" className="products-section">
+        <div className="section-intro">
+          <span>produtos em comercialização</span>
+          <h2>Ambientes completos.<br />Prontos para transformar a rotina.</h2>
+          <p>
+            Cada solução Mundo Lyra combina mobiliário, recursos sensoriais e organização pedagógica em um projeto integrado.
+          </p>
+        </div>
+
+        <div className="products-list">
+          {PRODUCTS.map((product, productIndex) => (
+            <article
+              id={product.id}
+              key={product.id}
+              className={`product-section ${activeProduct === productIndex ? "is-book-active" : ""}`}
+              style={{ "--product": product.color, "--product-soft": product.softColor } as CSSProperties}
+            >
+              <div className="product-visual">
+                <img src={product.image} alt={`Visualização da ${product.label}`} />
+                <div className="product-visual-caption">
+                  <span>{product.chapter}</span>
+                  <p>Projeto de referência<br />Mundo Lyra</p>
+                </div>
+              </div>
+
+              <div className="product-copy">
+                <span className="product-eyebrow">{product.eyebrow}</span>
+                <h3>{product.label}</h3>
+                <p className="product-lead">{product.sensoryNote}</p>
+
+                <div className="product-highlights">
+                  {product.highlights.map((highlight, index) => (
+                    <div key={highlight.title}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <div>
+                        <h4>{highlight.title}</h4>
+                        <p>{highlight.copy}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="product-actions">
+                  <a className="button-primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                    Solicitar orçamento <span aria-hidden="true">↗</span>
+                  </a>
+                  <a className="button-secondary" href={product.catalog} target="_blank" rel="noreferrer">
+                    Baixar catálogo <span aria-hidden="true">↓</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="included-grid">
+                <header>
+                  <span>composição</span>
+                  <h4>O que integra este ambiente</h4>
+                </header>
+                <ol>
+                  {product.items.map((item, index) => (
+                    <li key={item}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      {item}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <div>{ActiveSection && <ActiveSection key={activeSection} />}</div>
+      <section id="metodologia" className="methodology-section">
+        <div className="methodology-brand">
+          <img src="/assets/logo-mundo-lyra.webp" alt="Mundo Lyra" />
+          <div>
+            <span>metodologia própria</span>
+            <h2>Espaço, experiência<br />e desenvolvimento.</h2>
+          </div>
+        </div>
+        <div className="methodology-grid">
+          {[
+            ["Base científica", "Neurociência aplicada à educação."],
+            ["Desenvolvimento socioemocional", "Formação de valores, empatia e autorregulação."],
+            ["Aprendizagem significativa", "Experiências que conectam, engajam e transformam."],
+            ["Inovação e propriedade", "Metodologia autoral e registrada."],
+          ].map(([title, copy], index) => (
+            <article key={title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <div>
+          <span>vamos criar um espaço que acolhe?</span>
+          <h2>Converse com a equipe Foco.</h2>
+        </div>
+        <div className="footer-contact">
+          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">+55 11 99495-2210</a>
+          <a href="mailto:comercial@focosolucoeseducacionais.com.br">comercial@focosolucoeseducacionais.com.br</a>
+          <p>Vargem Grande Paulista - SP</p>
+        </div>
+      </footer>
     </main>
   )
 }
