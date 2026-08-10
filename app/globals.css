@@ -26,8 +26,9 @@ body {
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 88% 9%, rgba(201, 152, 63, 0.1), transparent 29rem),
-    linear-gradient(180deg, #f7f3eb 0%, var(--ivory) 100%);
+    radial-gradient(circle at 88% 9%, rgba(220, 38, 38, 0.08), transparent 30rem),
+    radial-gradient(circle at 10% 80%, rgba(30, 58, 138, 0.15), transparent 40rem),
+    #F0F4F8;
   color: var(--ink);
   font-family: Helvetica, Arial, sans-serif;
 }
@@ -283,12 +284,12 @@ a:focus-visible,
 }
 
 .book-object {
-  --book-width: min(39vw, 490px, calc(65svh * 0.75));
+  --book-width: min(42vw, 540px, calc(65svh * 1.33));
   position: absolute;
   top: 50%;
   left: 50%;
   width: var(--book-width);
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
   transform:
     translateX(calc(-50% + var(--open) * 50%))
     translateY(calc(-50% + var(--gravity) * 5px + var(--hand-y) * 3px))
@@ -419,9 +420,9 @@ a:focus-visible,
   height: 100%;
   overflow: hidden;
   border-radius: inherit;
-  background: var(--navy-deep);
+  background: linear-gradient(135deg, #1e3a8a, #dc2626);
   color: white;
-  box-shadow: inset 0 0 0 2px rgba(232, 202, 135, 0.22), inset 18px 0 38px rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.15), inset 18px 0 38px rgba(0, 0, 0, 0.28);
 }
 
 .cover-photo-pair {
@@ -1503,5 +1504,16 @@ a:focus-visible,
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-object {
+    --book-width: min(88vw, 490px);
+    aspect-ratio: 9 / 14;
+  }
+  .book-interaction {
+    height: clamp(28rem, 65svh, 40rem);
+    min-height: 28rem;
   }
 }
